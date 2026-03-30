@@ -34,8 +34,10 @@
   .header-left{display:flex;flex-direction:column;gap:2px}
   .header-month{font-size:13px;font-weight:500;color:var(--text2)}
   .header-total{font-size:24px;font-weight:500}
-  .travel-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:var(--travel-bg);color:var(--travel-text);font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:inherit}
-  .travel-badge .bdot{width:7px;height:7px;border-radius:50%;background:currentColor}
+  .curr-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:inherit;transition:background 0.15s}
+  .curr-badge.usd{background:var(--bg2);color:var(--text2)}
+  .curr-badge.foreign{background:var(--travel-bg);color:var(--travel-text)}
+  .curr-badge .bdot{width:7px;height:7px;border-radius:50%;background:currentColor}
 
   .tab-nav{display:flex;border-bottom:0.5px solid var(--border)}
   .tab-btn{flex:1;padding:12px 4px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-size:12px;color:var(--text2);font-family:inherit;transition:color 0.15s}
@@ -45,7 +47,7 @@
   .section.on{display:block}
 
   .amount-row{display:flex;align-items:center;gap:6px;margin-bottom:0.5rem;border-bottom:1.5px solid var(--border2);padding-bottom:6px}
-  .amount-symbol{font-size:22px;color:var(--text2);min-width:20px}
+  .amount-sym{font-size:20px;color:var(--text2);min-width:38px;font-weight:500}
   #amt{flex:1;font-size:32px;font-weight:500;border:none;background:transparent;color:var(--text);outline:none;font-family:inherit}
   .usd-preview{font-size:13px;color:var(--travel-text);margin-bottom:1rem;min-height:20px;padding-left:2px}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
@@ -60,12 +62,10 @@
   .btn-sm{padding:10px 16px;font-size:14px;width:auto}
   .msg{text-align:center;font-size:13px;margin-top:8px;min-height:18px}
 
-  /* pill toggle */
   .pill-toggle{display:inline-flex;background:var(--bg2);border-radius:20px;padding:3px;margin-bottom:1.25rem}
   .pill-btn{padding:7px 18px;border-radius:17px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);font-family:inherit;transition:all 0.15s}
   .pill-btn.on{background:var(--bg);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
 
-  /* summary */
   .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
   .metric{background:var(--bg2);border-radius:var(--radius);padding:1rem}
   .metric-label{font-size:12px;color:var(--text2);margin-bottom:4px}
@@ -77,19 +77,15 @@
   .bar-fill{height:6px;border-radius:3px}
   .divider{border-top:0.5px solid var(--border);padding-top:1rem;margin-top:1.5rem}
 
-  /* month rows in all-months view */
   .month-row{display:flex;align-items:center;padding:11px 0;border-bottom:0.5px solid var(--border);gap:10px}
-  .month-label{font-size:14px;min-width:90px;flex-shrink:0}
-  .month-label.current{font-weight:500;color:var(--text)}
-  .month-label.archived{color:var(--text2)}
+  .month-lbl{font-size:14px;min-width:90px;flex-shrink:0}
+  .month-lbl.cur{font-weight:500;color:var(--text)}
+  .month-lbl.arc{color:var(--text2)}
   .month-bar-wrap{flex:1}
   .month-bar-track{height:8px;border-radius:4px;background:var(--border)}
-  .month-bar-fill{height:8px;border-radius:4px;background:var(--info);transition:width 0.3s}
-  .month-bar-fill.current{background:var(--info)}
-  .month-bar-fill.archived{background:var(--text3)}
+  .month-bar-fill{height:8px;border-radius:4px}
   .month-amt{font-size:14px;font-weight:500;min-width:60px;text-align:right;flex-shrink:0}
 
-  /* history */
   .hist-row{display:flex;align-items:flex-start;padding:10px 0;border-bottom:0.5px solid var(--border);gap:10px}
   .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:5px}
   .hist-cat{font-size:14px;font-weight:500}
@@ -101,7 +97,6 @@
   .del{background:none;border:none;cursor:pointer;color:var(--text3);font-size:20px;padding:2px 4px;line-height:1;font-family:inherit}
   .del:hover{color:var(--danger)}
 
-  /* categories */
   .cat-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:0.5px solid var(--border)}
   .cat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
   .cat-input{flex:1;font-size:14px;border:none;background:transparent;color:var(--text);font-family:inherit;outline:none}
@@ -109,18 +104,21 @@
   .add-row input{flex:1;padding:10px 12px;font-size:14px;border:0.5px solid var(--border2);border-radius:var(--radius);background:transparent;color:var(--text);font-family:inherit;outline:none}
   .add-row input:focus{border-color:var(--info)}
 
-  /* settings */
-  .setting-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:0.5px solid var(--border)}
-  .setting-label{font-size:14px;font-weight:500}
-  .setting-sub{font-size:12px;color:var(--text2);margin-top:2px}
-  .toggle{position:relative;width:44px;height:26px;flex-shrink:0}
-  .toggle input{opacity:0;width:0;height:0}
-  .toggle-slider{position:absolute;inset:0;border-radius:13px;background:var(--border2);cursor:pointer;transition:background 0.2s}
-  .toggle-slider:before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;border-radius:50%;background:#fff;transition:transform 0.2s}
-  .toggle input:checked+.toggle-slider{background:var(--travel)}
-  .toggle input:checked+.toggle-slider:before{transform:translateX(18px)}
-  .rate-input{width:90px;padding:8px 10px;font-size:14px;border:0.5px solid var(--border2);border-radius:var(--radius);background:transparent;color:var(--text);font-family:inherit;outline:none;text-align:right}
-  .rate-input:focus{border-color:var(--travel)}
+  /* currency selector */
+  .curr-list{margin-bottom:0.5rem}
+  .curr-item{display:flex;align-items:center;padding:11px 0;border-bottom:0.5px solid var(--border);gap:12px;cursor:pointer}
+  .curr-radio{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+  .curr-radio.on{border-color:var(--info);background:var(--info)}
+  .curr-radio.on::after{content:'';width:8px;height:8px;border-radius:50%;background:#fff}
+  .curr-name{flex:1}
+  .curr-name-main{font-size:14px;font-weight:500}
+  .curr-name-sub{font-size:12px;color:var(--text2)}
+  .curr-rate-wrap{display:flex;align-items:center;gap:6px}
+  .curr-rate-label{font-size:12px;color:var(--text3)}
+  .curr-rate-input{width:80px;padding:6px 8px;font-size:13px;border:0.5px solid var(--border2);border-radius:var(--radius);background:transparent;color:var(--text);font-family:inherit;outline:none;text-align:right}
+  .curr-rate-input:focus{border-color:var(--info)}
+  .curr-rate-input:disabled{opacity:0.35;cursor:default}
+  .rate-note{font-size:12px;color:var(--text3);margin-top:0.75rem;padding-top:0.75rem;border-top:0.5px solid var(--border)}
 
   .empty{color:var(--text3);font-size:14px;padding:1rem 0}
   @media(max-width:480px){.app{min-height:100svh}}
@@ -134,7 +132,7 @@
       <span class="header-month" id="mlabel"></span>
       <span class="header-total" id="mhead">$0.00</span>
     </div>
-    <button class="travel-badge" id="travel-badge" onclick="go('settings')" title="Travel settings">
+    <button class="curr-badge usd" id="curr-badge" onclick="go('settings')">
       <span class="bdot"></span>
       <span id="badge-label">USD</span>
     </button>
@@ -152,7 +150,7 @@
   <div id="s-log" class="section on">
     <p style="font-size:13px;color:var(--text2);margin-bottom:1rem">Log a purchase</p>
     <div class="amount-row">
-      <span class="amount-symbol" id="sym">$</span>
+      <span class="amount-sym" id="sym">$</span>
       <input type="number" id="amt" placeholder="0.00" step="0.01" min="0" inputmode="decimal" oninput="previewUSD()"/>
     </div>
     <p class="usd-preview" id="usd-preview"></p>
@@ -168,8 +166,6 @@
       <button class="pill-btn on" id="pill-month" onclick="sumView('month')">This month</button>
       <button class="pill-btn" id="pill-all" onclick="sumView('all')">All months</button>
     </div>
-
-    <!-- this month view -->
     <div id="sum-month">
       <div class="metric-grid">
         <div class="metric"><p class="metric-label">Total spent (USD)</p><p class="metric-val" id="st"></p></div>
@@ -183,11 +179,9 @@
         <button class="btn btn-danger" onclick="resetMonth()">Clear month &amp; start fresh</button>
       </div>
     </div>
-
-    <!-- all months view -->
     <div id="sum-all" style="display:none">
       <div id="all-months-list"></div>
-      <p style="font-size:12px;color:var(--text3);margin-top:1.25rem">Past months are saved automatically when you clear. Current month updates live.</p>
+      <p style="font-size:12px;color:var(--text3);margin-top:1.25rem">Past months saved automatically when you clear. Current month updates live.</p>
     </div>
   </div>
 
@@ -209,50 +203,44 @@
 
   <!-- SETTINGS -->
   <div id="s-settings" class="section">
-    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem">Currency &amp; travel</p>
-    <div class="setting-row">
-      <div>
-        <p class="setting-label">Travel mode (JPY)</p>
-        <p class="setting-sub">Log purchases in Japanese Yen</p>
-      </div>
-      <label class="toggle">
-        <input type="checkbox" id="travel-toggle" onchange="toggleTravel()"/>
-        <span class="toggle-slider"></span>
-      </label>
-    </div>
-    <div class="setting-row" id="rate-row" style="display:none">
-      <div>
-        <p class="setting-label">Exchange rate</p>
-        <p class="setting-sub">¥ per $1 USD — update when you arrive</p>
-      </div>
-      <input class="rate-input" type="number" id="rate-input" step="0.01" min="1" onchange="saveRate()"/>
-    </div>
-    <div id="rate-hint" style="display:none;padding:10px 0">
-      <p style="font-size:12px;color:var(--text2)">Rate last updated: <span id="rate-updated"></span></p>
-      <p style="font-size:12px;color:var(--text2);margin-top:4px">At current rate: ¥1,000 = $<span id="rate-example"></span></p>
-    </div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem">Active currency — tap to switch, edit rate if needed</p>
+    <div class="curr-list" id="curr-list"></div>
+    <p class="rate-note">Rates are per $1 USD. Update them when you travel — each currency remembers its own rate independently.</p>
   </div>
 
 </div>
 
 <script>
+const CURRENCIES=[
+  {code:'USD',symbol:'$',name:'US Dollar',defaultRate:1,decimals:2},
+  {code:'EUR',symbol:'€',name:'Euro',defaultRate:0.8691,decimals:2},
+  {code:'GBP',symbol:'£',name:'British Pound',defaultRate:0.7192,decimals:2},
+  {code:'JPY',symbol:'¥',name:'Japanese Yen',defaultRate:160.27,decimals:0},
+  {code:'CAD',symbol:'CA$',name:'Canadian Dollar',defaultRate:1.2600,decimals:2},
+  {code:'CHF',symbol:'Fr',name:'Swiss Franc',defaultRate:0.9331,decimals:2},
+  {code:'MXN',symbol:'MX$',name:'Mexican Peso',defaultRate:18.12,decimals:2},
+  {code:'COP',symbol:'COP',name:'Colombian Peso',defaultRate:3669.26,decimals:0},
+  {code:'CRC',symbol:'₡',name:'Costa Rican Colón',defaultRate:464.46,decimals:0},
+];
+
 const PALETTE=['#378ADD','#BA7517','#3B6D11','#7F77DD','#D4537E','#1D9E75','#888780','#D85A30','#A32D2D','#0F6E56','#533AB7','#639922'];
 const DEFAULT_CATS=['Food','Gas','Groceries','Shopping','Entertainment','Health','Other'];
-const DEFAULT_RATE=160.27;
 let entries=[], cats=[], sel='';
-let travelMode=false, rate=DEFAULT_RATE;
+let activeCurr='USD', rates={};
 let activeSumView='month';
 
 function mkey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
 function mlabel(){return new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});}
 function fmtKey(k){const[y,m]=k.split('-');return new Date(y,m-1,1).toLocaleDateString('en-US',{month:'short',year:'numeric'});}
 function catColor(c){const i=cats.indexOf(c);return PALETTE[i<0?0:i%PALETTE.length];}
+function currDef(code){return CURRENCIES.find(c=>c.code===code)||CURRENCIES[0];}
+function getRate(code){return code==='USD'?1:(rates[code]||currDef(code).defaultRate);}
 
 function load(){
   try{entries=JSON.parse(localStorage.getItem('exp:'+mkey()))||[];}catch{entries=[];}
   try{cats=JSON.parse(localStorage.getItem('exp:cats'))||DEFAULT_CATS;}catch{cats=[...DEFAULT_CATS];}
-  try{const s=JSON.parse(localStorage.getItem('exp:settings')||'{}');travelMode=s.travelMode||false;rate=s.rate||DEFAULT_RATE;}catch{}
-  migrate();applyTravelUI();head();renderChips();
+  try{const s=JSON.parse(localStorage.getItem('exp:settings')||'{}');activeCurr=s.activeCurr||'USD';rates=s.rates||{};}catch{}
+  migrate();applyBadge();head();renderChips();
 }
 
 function migrate(){
@@ -261,17 +249,14 @@ function migrate(){
 
 function saveEntries(){localStorage.setItem('exp:'+mkey(),JSON.stringify(entries));}
 function saveCats(){localStorage.setItem('exp:cats',JSON.stringify(cats));}
-function saveSettings(){localStorage.setItem('exp:settings',JSON.stringify({travelMode,rate,rateUpdated:new Date().toISOString()}));}
+function saveSettings(){localStorage.setItem('exp:settings',JSON.stringify({activeCurr,rates}));}
 
-// snapshot: saves {total, count} for a month key into exp:monthly
 function snapshotMonth(key){
-  let snaps={};
-  try{snaps=JSON.parse(localStorage.getItem('exp:monthly'))||{};}catch{}
-  let data=[];
-  try{data=JSON.parse(localStorage.getItem('exp:'+key))||[];}catch{}
+  let snaps={};try{snaps=JSON.parse(localStorage.getItem('exp:monthly'))||{};}catch{}
+  let data=[];try{data=JSON.parse(localStorage.getItem('exp:'+key))||[];}catch{}
   const total=data.reduce((s,e)=>s+(e.usd||e.amount),0);
   const count=data.length;
-  if(count>0) snaps[key]={total:parseFloat(total.toFixed(2)),count};
+  if(count>0)snaps[key]={total:parseFloat(total.toFixed(2)),count};
   else delete snaps[key];
   localStorage.setItem('exp:monthly',JSON.stringify(snaps));
 }
@@ -282,30 +267,32 @@ function head(){
   document.getElementById('mhead').textContent='$'+t.toFixed(2);
 }
 
-function applyTravelUI(){
-  document.getElementById('travel-toggle').checked=travelMode;
-  document.getElementById('rate-row').style.display=travelMode?'flex':'none';
-  document.getElementById('rate-hint').style.display=travelMode?'block':'none';
-  document.getElementById('rate-input').value=rate;
-  document.getElementById('sym').textContent=travelMode?'¥':'$';
-  document.getElementById('badge-label').textContent=travelMode?'JPY':'USD';
+function applyBadge(){
+  const badge=document.getElementById('curr-badge');
+  const isUSD=activeCurr==='USD';
+  badge.className='curr-badge '+(isUSD?'usd':'foreign');
+  document.getElementById('badge-label').textContent=activeCurr;
+  const cd=currDef(activeCurr);
+  document.getElementById('sym').textContent=cd.symbol;
   document.getElementById('usd-preview').textContent='';
-  const ex=document.getElementById('rate-example');
-  if(ex)ex.textContent=(1000/rate).toFixed(2);
-  try{
-    const s=JSON.parse(localStorage.getItem('exp:settings')||'{}');
-    const ru=document.getElementById('rate-updated');
-    if(ru)ru.textContent=s.rateUpdated?new Date(s.rateUpdated).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
-  }catch{}
 }
 
-function toggleTravel(){travelMode=document.getElementById('travel-toggle').checked;saveSettings();applyTravelUI();}
-function saveRate(){rate=parseFloat(document.getElementById('rate-input').value)||DEFAULT_RATE;saveSettings();applyTravelUI();}
+function setCurr(code){
+  activeCurr=code;saveSettings();applyBadge();renderCurrList();
+}
+
+function updateRate(code,val){
+  const v=parseFloat(val);
+  if(v>0)rates[code]=v;
+  saveSettings();
+}
 
 function previewUSD(){
-  if(!travelMode){document.getElementById('usd-preview').textContent='';return;}
   const v=parseFloat(document.getElementById('amt').value);
-  document.getElementById('usd-preview').textContent=v>0?'≈ $'+(v/rate).toFixed(2)+' USD':'';
+  const el=document.getElementById('usd-preview');
+  if(activeCurr==='USD'||!v||v<=0){el.textContent='';return;}
+  const r=getRate(activeCurr);
+  el.textContent='≈ $'+(v/r).toFixed(2)+' USD';
 }
 
 function renderChips(){
@@ -318,13 +305,36 @@ function renderChips(){
   });
 }
 
+function renderCurrList(){
+  const el=document.getElementById('curr-list');
+  el.innerHTML=CURRENCIES.map(c=>{
+    const isActive=c.code===activeCurr;
+    const r=getRate(c.code);
+    const isUSD=c.code==='USD';
+    return`<div class="curr-item" onclick="setCurr('${c.code}')">
+      <div class="curr-radio ${isActive?'on':''}"></div>
+      <div class="curr-name">
+        <p class="curr-name-main">${c.code} — ${c.name}</p>
+        ${!isUSD?`<p class="curr-name-sub">${c.symbol}1 = $${(1/r).toFixed(4)} USD</p>`:'<p class="curr-name-sub">Base currency</p>'}
+      </div>
+      ${!isUSD?`<div class="curr-rate-wrap" onclick="event.stopPropagation()">
+        <span class="curr-rate-label">per $1</span>
+        <input class="curr-rate-input" type="number" value="${r}" step="0.0001" min="0.0001"
+          onchange="updateRate('${c.code}',this.value);renderCurrList()" onclick="event.stopPropagation()"/>
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+
 function addEntry(){
   const v=parseFloat(document.getElementById('amt').value);
   if(!v||v<=0){flash('Enter an amount',1);return;}
   if(!sel){flash('Pick a category',1);return;}
   const memo=document.getElementById('memo').value.trim();
-  const usd=travelMode?parseFloat((v/rate).toFixed(2)):v;
-  entries.push({id:Date.now(),amount:v,usd,currency:travelMode?'JPY':'USD',rate:travelMode?rate:null,category:sel,memo:memo||null,date:new Date().toISOString()});
+  const r=getRate(activeCurr);
+  const usd=activeCurr==='USD'?v:parseFloat((v/r).toFixed(2));
+  const cd=currDef(activeCurr);
+  entries.push({id:Date.now(),amount:v,usd,currency:activeCurr,rate:activeCurr==='USD'?null:r,category:sel,memo:memo||null,date:new Date().toISOString()});
   saveEntries();
   document.getElementById('amt').value='';
   document.getElementById('memo').value='';
@@ -345,7 +355,7 @@ function go(t){
   if(t==='sum'){rSum();if(activeSumView==='all')rAllMonths();}
   if(t==='hist')rHist();
   if(t==='cats')rCats();
-  if(t==='settings')applyTravelUI();
+  if(t==='settings')renderCurrList();
 }
 
 function sumView(v){
@@ -374,26 +384,21 @@ function rSum(){
 
 function rAllMonths(){
   const el=document.getElementById('all-months-list');
-  let snaps={};
-  try{snaps=JSON.parse(localStorage.getItem('exp:monthly'))||{};}catch{}
-
-  // include current month live total
+  let snaps={};try{snaps=JSON.parse(localStorage.getItem('exp:monthly'))||{};}catch{}
   const curKey=mkey();
   const curTotal=entries.reduce((s,e)=>s+(e.usd||e.amount),0);
-  const allMonths={...snaps};
-  if(curTotal>0||entries.length>0) allMonths[curKey]={total:parseFloat(curTotal.toFixed(2)),count:entries.length,current:true};
-
-  const keys=Object.keys(allMonths).sort((a,b)=>b.localeCompare(a));
-  if(!keys.length){el.innerHTML='<p class="empty">No monthly data yet. Months are saved here when you clear them, or shown live for the current month.</p>';return;}
-
-  const mx=Math.max(...keys.map(k=>allMonths[k].total));
+  const all={...snaps};
+  if(curTotal>0||entries.length>0)all[curKey]={total:parseFloat(curTotal.toFixed(2)),count:entries.length,current:true};
+  const keys=Object.keys(all).sort((a,b)=>b.localeCompare(a));
+  if(!keys.length){el.innerHTML='<p class="empty">No monthly data yet. Months appear here when cleared, or live for the current month.</p>';return;}
+  const mx=Math.max(...keys.map(k=>all[k].total));
   el.innerHTML=keys.map(k=>{
-    const{total,count,current}=allMonths[k];
+    const{total,count,current}=all[k];
     const w=mx>0?Math.round(total/mx*100):0;
-    const label=fmtKey(k)+(current?' <span style="font-size:11px;color:var(--info)">now</span>':'');
+    const lbl=fmtKey(k)+(current?' <span style="font-size:11px;color:var(--info)">now</span>':'');
     return`<div class="month-row">
-      <div class="month-label ${current?'current':'archived'}">${label}</div>
-      <div class="month-bar-wrap"><div class="month-bar-track"><div class="month-bar-fill ${current?'current':'archived'}" style="width:${w}%"></div></div></div>
+      <div class="month-lbl ${current?'cur':'arc'}">${lbl}</div>
+      <div class="month-bar-wrap"><div class="month-bar-track"><div class="month-bar-fill" style="background:${current?'var(--info)':'var(--text3)'};width:${w}%"></div></div></div>
       <div class="month-amt">$${total.toFixed(2)}</div>
     </div>`;
   }).join('');
@@ -405,7 +410,9 @@ function rHist(){
   hl.innerHTML=[...entries].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(e=>{
     const d=new Date(e.date);
     const ds=d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-    const origLine=e.currency==='JPY'?`<p class="hist-orig">¥${Math.round(e.amount).toLocaleString()} at ¥${e.rate}/$</p>`:'';
+    const cd=currDef(e.currency||'USD');
+    const origAmt=e.currency&&e.currency!=='USD'?e.amount:null;
+    const origLine=origAmt?`<p class="hist-orig">${cd.symbol}${origAmt.toLocaleString(undefined,{maximumFractionDigits:cd.decimals})} ${e.currency} @ ${e.rate}</p>`:'';
     const memoLine=e.memo?`<p class="hist-memo">${e.memo}</p>`:'';
     return`<div class="hist-row"><div class="dot" style="background:${catColor(e.category)}"></div><div style="flex:1;min-width:0"><p class="hist-cat">${e.category}</p><p class="hist-date">${ds}</p>${memoLine}${origLine}</div><div class="hist-right"><span class="hist-amt">$${(e.usd||e.amount).toFixed(2)}</span><button class="del" onclick="delEntry(${e.id})">×</button></div></div>`;
   }).join('');
