@@ -244,7 +244,7 @@
     </div>
     <div id="sum-all" style="display:none">
       <div id="all-months-list"></div>
-      <p style="font-size:12px;color:var(--text3);margin-top:1.25rem">Past months saved automatically when you clear. Current month updates live.</p>
+      <p style="font-size:12px;color:var(--text3);margin-top:1.25rem">Past months save automatically at month end. Current month updates live.</p>
     </div>
     <div id="sum-cat" style="display:none">
       <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Select a category to see monthly totals</p>
@@ -326,6 +326,7 @@ let activeSumView='month', selectedSumCat='';
 let histFilterCat='', pendingDelId=null;
 let editingId=null, editSel='';
 
+function esc(s){const d=document.createElement('div');d.textContent=String(s);return d.innerHTML;}
 function mkey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
 function mlabel(){return new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});}
 function fmtKey(k){const[y,m]=k.split('-');return new Date(y,m-1,1).toLocaleDateString('en-US',{month:'short',year:'numeric'});}
@@ -338,7 +339,30 @@ function load(){
   try{incomeEntries=JSON.parse(localStorage.getItem('inc:'+mkey()))||[];}catch{incomeEntries=[];}
   try{cats=JSON.parse(localStorage.getItem('exp:cats'))||DEFAULT_CATS;}catch{cats=[...DEFAULT_CATS];}
   try{const s=JSON.parse(localStorage.getItem('exp:settings')||'{}');activeCurr=s.activeCurr||'USD';rates=s.rates||{};}catch{}
+  snapshotIfLastDay();
+  autoSnapshotPastMonths();
   migrate();applyBadge();head();renderChips();
+}
+
+function snapshotIfLastDay(){
+  const now=new Date();
+  const lastDay=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  if(now.getDate()===lastDay) snapshotMonth(mkey());
+}
+
+function autoSnapshotPastMonths(){
+  const cur=mkey();
+  let snaps={};try{snaps=JSON.parse(localStorage.getItem('exp:monthly'))||{};}catch{}
+  const toSnapshot=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k||!k.startsWith('exp:'))continue;
+    const month=k.slice(4);
+    if(month===cur||!/^\d{4}-\d{2}$/.test(month))continue;
+    if(snaps[month])continue;
+    toSnapshot.push(month);
+  }
+  toSnapshot.forEach(month=>snapshotMonth(month));
 }
 
 function migrate(){
@@ -499,7 +523,7 @@ function rSum(){
     bd.innerHTML=Object.entries(by).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>{
       const pct=t>0?Math.round(amt/t*100):0;
       const w=Math.round(amt/mx*100);
-      return`<div class="bar-row"><div class="bar-head"><span>${cat}</span><span style="font-weight:500">$${amt.toFixed(2)} <span style="font-size:12px;color:var(--text2)">(${pct}%)</span></span></div><div class="bar-track"><div class="bar-fill" style="background:${catColor(cat)};width:${w}%"></div></div></div>`;
+      return`<div class="bar-row"><div class="bar-head"><span>${esc(cat)}</span><span style="font-weight:500">$${amt.toFixed(2)} <span style="font-size:12px;color:var(--text2)">(${pct}%)</span></span></div><div class="bar-track"><div class="bar-fill" style="background:${catColor(cat)};width:${w}%"></div></div></div>`;
     }).join('');
   }
 
@@ -530,7 +554,7 @@ function rIncomeSection(spent){
     const d=new Date(e.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
     return`<div class="income-row">
       <div style="flex:1;min-width:0">
-        <p class="income-source">${e.source}</p>
+        <p class="income-source">${esc(e.source)}</p>
         <p class="income-date">${d}</p>
       </div>
       <span class="income-amt">+$${e.amount.toFixed(2)}</span>
@@ -646,7 +670,7 @@ function rCatBars(){
   const mx=Math.max(...vals,0.01);
   const total=vals.reduce((s,v)=>s+v,0);
   if(total===0){el.innerHTML='<p class="empty" style="margin-top:8px">No spending in this category yet</p>';return;}
-  el.innerHTML=`<p class="section-label" style="margin-top:4px;margin-bottom:12px">Monthly totals — ${selectedSumCat}</p>`+keys.map((k,i)=>{
+  el.innerHTML=`<p class="section-label" style="margin-top:4px;margin-bottom:12px">Monthly totals — ${esc(selectedSumCat)}</p>`+keys.map((k,i)=>{
     const amt=vals[i];
     const w=Math.round(amt/mx*100);
     const isCur=all[k].current;
@@ -662,8 +686,14 @@ function rCatBars(){
 /* History */
 function renderHistFilterChips(){
   const el=document.getElementById('hist-filter-chips');
-  const allCats=['All',...cats];
-  el.innerHTML=allCats.map(c=>`<button class="hist-chip${(c==='All'&&!histFilterCat)||(c===histFilterCat)?' on':''}" onclick="setHistFilter('${c}')">${c}</button>`).join('');
+  el.innerHTML='';
+  ['All',...cats].forEach(c=>{
+    const b=document.createElement('button');
+    b.className='hist-chip'+((c==='All'&&!histFilterCat)||(c===histFilterCat)?' on':'');
+    b.textContent=c;
+    b.addEventListener('click',()=>setHistFilter(c));
+    el.appendChild(b);
+  });
 }
 
 function setHistFilter(c){
@@ -691,13 +721,13 @@ function rHist(){
     const ds=d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
     const cd=currDef(e.currency||'USD');
     const origAmt=e.currency&&e.currency!=='USD'?e.amount:null;
-    const origLine=origAmt?`<p class="hist-orig">${cd.symbol}${origAmt.toLocaleString(undefined,{maximumFractionDigits:cd.decimals})} ${e.currency} @ ${e.rate}</p>`:'';
-    const memoLine=e.memo?`<p class="hist-memo">${e.memo}</p>`:'';
+    const origLine=origAmt?`<p class="hist-orig">${esc(cd.symbol)}${origAmt.toLocaleString(undefined,{maximumFractionDigits:cd.decimals})} ${esc(e.currency)} @ ${e.rate}</p>`:'';
+    const memoLine=e.memo?`<p class="hist-memo">${esc(e.memo)}</p>`:'';
     const isPending=pendingDelId===e.id;
     return`<div class="hist-row" id="row-${e.id}">
       <div class="dot" style="background:${catColor(e.category)}"></div>
       <div style="flex:1;min-width:0">
-        <p class="hist-cat">${e.category}</p>
+        <p class="hist-cat">${esc(e.category)}</p>
         <p class="hist-date">${ds}</p>
         ${memoLine}${origLine}
       </div>
@@ -785,7 +815,7 @@ function rCats(){
   el.innerHTML=cats.map((c,i)=>`
     <div class="cat-row">
       <div class="cat-dot" style="background:${PALETTE[i%PALETTE.length]}"></div>
-      <input class="cat-input" value="${c}" onblur="renameCat(${i},this.value)" onkeydown="if(event.key==='Enter')this.blur()"/>
+      <input class="cat-input" value="${esc(c)}" onblur="renameCat(${i},this.value)" onkeydown="if(event.key==='Enter')this.blur()"/>
       <button class="del" onclick="removeCat(${i})">×</button>
     </div>`).join('');
 }
